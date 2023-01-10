@@ -1,0 +1,353 @@
+<!doctype html>
+<!--[if lt IE 7]>
+<html class="no-js lt-ie9 lt-ie8 lt-ie7" lang=""> <![endif]-->
+<!--[if IE 7]>
+<html class="no-js lt-ie9 lt-ie8" lang=""> <![endif]-->
+<!--[if IE 8]>
+<html class="no-js lt-ie9" lang=""> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="no-js" lang=""> <!--<![endif]-->
+<head>
+    {% include "head.html" %}
+</head>
+
+<body>
+<div id="right-panel" class="right-panel">
+    <div class="content">
+        <div class="animated fadeIn">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="row">
+                        <div class="col-lg-7">
+                            <div class="card-body">
+                                <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist" style="display: flex">
+                                    <li class="nav-item">
+                                        <a class="nav-link active" id="pills-home-tab" data-toggle="pill"
+                                           href="#pills-home"
+                                           role="tab" aria-controls="pills-home" aria-selected="true">Количество</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" id="pills-profile-tab" data-toggle="pill"
+                                           href="#pills-profile"
+                                           role="tab" aria-controls="pills-profile"
+                                           aria-selected="false">Осталось %</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" id="forecast-tab" data-toggle="pill"
+                                           href="#pills-forecast"
+                                           role="tab" aria-controls="pills-forecast"
+                                           aria-selected="false">Прогноз</a>
+                                    </li>
+                                </ul>
+                                <div class="tab-content" id="pills-tabContent" style="height: 100%">
+                                    <div class="tab-pane fade show active" id="pills-home" role="tabpanel"
+                                         aria-labelledby="pills-home-tab" style="height: 90%">
+                                        <canvas id="sales-chart"></canvas>
+                                    </div>
+                                    <div class="tab-pane fade" id="pills-profile" role="tabpanel"
+                                         aria-labelledby="pills-profile-tab" style="height: 90%">
+                                        <canvas id="barChart"></canvas>
+                                    </div>
+                                    <div class="tab-pane fade" id="pills-forecast" role="tabpanel"
+                                         aria-labelledby="forecast-tab" style="height: 90%">
+                                        <canvas id="forecastChart"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-5">
+                            <div class="card-body">
+                                <table id="bootstrap-data-table" class="table table-striped table-bordered">
+                                    <thead>
+                                    <tr>
+                                        <th><span class="product">Артикул</span></th>
+                                        <th><span class="product">Количество</span></th>
+                                        <th><span class="product">Последнее обновление</span></th>
+                                        <th><span class="product"
+                                                  style="white-space:nowrap">Закончится в</span>
+                                        </th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for forecast in forecasts %}
+                                    <tr>
+                                        <td>{{ forecast.article }}</td>
+                                        <td>{{ forecast.count }}</td>
+                                        <td>{{ forecast.last_update }}</td>
+                                        <td>{{ forecast.end_date }}</td>
+                                    </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="card-header">
+                                <strong class="card-title">Alerts</strong>
+                            </div>
+                            <div class="card-body">
+                                <div class="alert alert-danger" role="alert">
+                                    Закончатся на складе в ближайшие 12 часов:
+                                    {% set my_string = ' ' %}
+                                    {% for forecast in forecasts %}
+                                    {% if forecast.show_adding %}
+                                    {% set my_string = my_string ~ forecast.article ~ ' '%}
+                                    {{ my_string }}
+                                    {% endif %}
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="card-header">
+                                <strong>Добавить товар</strong>
+                            </div>
+                            <div class="card-body card-block">
+                                <form action="#" method="post" enctype="multipart/form-data"
+                                      class="form-horizontal">
+                                    {{ csrf_input }}
+                                    <div class="row form-group">
+                                        <div class="col col-md-3"><label for="count"
+                                                                         class=" form-control-label">Количество
+                                        </label></div>
+                                        <div class="col-12 col-md-9"><input type="number" id="count"
+                                                                            name="count"
+                                                                            placeholder="Количество"
+                                                                            class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="row form-group">
+                                        <div class="col col-md-3"><label for="sku" class=" form-control-label">Артикул
+                                        </label>
+                                        </div>
+                                        <div class="col-12 col-md-9">
+                                            <select name="sku" id="sku" class="form-control">
+                                                {% for forecast in forecasts %}
+                                                {% if forecast.show_adding %}
+                                                <option value="{{ forecast.id }}">{{ forecast.article }}
+                                                </option>
+                                                {% endif %}
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="card-footer">
+                                        <button type="submit" class="btn btn-primary btn-sm">
+                                            <i class="fa fa-dot-circle-o"></i> Добавить
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% include "scripts.html" %}
+    <!-- Scripts -->
+
+    <script>
+{% block javascript %}
+  var ctx = document.getElementById( "sales-chart" );
+    var myChart = new Chart( ctx, {
+        type: 'line',
+        data: {
+            labels: {{ labels | tojson }},
+            type: 'line',
+            defaultFontFamily: 'Montserrat',
+            datasets: {{ chart_data | tojson }}
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            tooltips: {
+                mode: 'index',
+                titleFontSize: 12,
+                titleFontColor: '#000',
+                bodyFontColor: '#000',
+                backgroundColor: '#fff',
+                titleFontFamily: 'Montserrat',
+                bodyFontFamily: 'Montserrat',
+                cornerRadius: 3,
+                intersect: false,
+            },
+            legend: {
+                display: false,
+                labels: {
+                    usePointStyle: true,
+                    fontFamily: 'Montserrat',
+                },
+            },
+            scales: {
+                xAxes: [ {
+                    display: true,
+                    gridLines: {
+                        display: false,
+                        drawBorder: false
+                    },
+                    scaleLabel: {
+                        display: false,
+                        labelString: 'Month'
+                    }
+                        } ],
+                yAxes: [ {
+                    display: true,
+                    gridLines: {
+                        display: false,
+                        drawBorder: false
+                    },
+                    scaleLabel: {
+                        display: true,
+                        labelString: 'Value'
+                    }
+                        } ]
+            },
+            title: {
+                display: false,
+                text: 'Normal Legend'
+            }
+        }
+    } );
+
+  var ctx = document.getElementById( "forecastChart" );
+    var myChart = new Chart( ctx, {
+        type: 'line',
+        data: {
+            labels: {{ forecast_labels | tojson }},
+            type: 'line',
+            defaultFontFamily: 'Montserrat',
+            datasets: {{ forecast_chart | tojson }}
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            tooltips: {
+                mode: 'index',
+                titleFontSize: 12,
+                titleFontColor: '#000',
+                bodyFontColor: '#000',
+                backgroundColor: '#fff',
+                titleFontFamily: 'Montserrat',
+                bodyFontFamily: 'Montserrat',
+                cornerRadius: 3,
+                intersect: false,
+            },
+            legend: {
+                display: false,
+                labels: {
+                    usePointStyle: true,
+                    fontFamily: 'Montserrat',
+                },
+            },
+            scales: {
+                xAxes: [ {
+                    display: true,
+                    gridLines: {
+                        display: false,
+                        drawBorder: false
+                    },
+                    scaleLabel: {
+                        display: false,
+                        labelString: 'Month'
+                    }
+                        } ],
+                yAxes: [ {
+                    display: true,
+                    gridLines: {
+                        display: false,
+                        drawBorder: false
+                    },
+                    scaleLabel: {
+                        display: true,
+                        labelString: 'Value'
+                    }
+                        } ]
+            },
+            title: {
+                display: false,
+                text: 'Normal Legend'
+            }
+        }
+    } );
+
+//bar chart
+    var ctx = document.getElementById( "barChart" );
+    var myChart = new Chart( ctx, {
+        type: 'bar',
+        data: {
+            labels: [],
+            datasets: {{ bar_chart | tojson }}
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                yAxes: [ {
+                    ticks: {
+                        beginAtZero: true
+                    }
+                                } ]
+            }
+        }
+    } );
+
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+          $('#bootstrap-data-table').DataTable();
+      } );
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </script>
+</body>
+</html>
