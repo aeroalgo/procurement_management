@@ -1,0 +1,33 @@
+version: '3.7'
+
+x-backend-env:
+  &backend-env
+    PSQL_HOST: ${PSQL_HOST}
+    PSQL_PORT: ${PSQL_PORT}
+    PSQL_USER: ${PSQL_USER}
+    PSQL_PASS: ${PSQL_PASS}
+    PSQL_DB: ${PSQL_DB}
+    PYTHONPATH: /var
+    APP_PORT: ${APP_PORT}
+
+
+x-backend:
+  &backend
+  build:
+    context: ../../
+    dockerfile: procurement_management/docker/Dockerfile
+  restart: on-failure
+  tty: true
+  volumes:
+    - "../../procurement_management/app:/var/app"
+  environment:
+    <<: *backend-env
+
+
+services:
+
+  # ####################################################################################################################
+  # Веб-сервисы (backend)
+  # ####################################################################################################################
+  backend:
+    <<: *backend
