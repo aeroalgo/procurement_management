@@ -7,6 +7,8 @@ dockerize -wait tcp://${PSQL_HOST}:${PSQL_PORT}
 
 # Миграция и синхронизация
 ./manage.py migrate --noinput
+./manage.py sync_permissions
+./manage.py users_generate 10
 
 # Запуск команды
 ./manage.py runserver 0.0.0.0:${APP_PORT}
