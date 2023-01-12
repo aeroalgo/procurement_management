@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'app.common.apps.CommonConfig'
 ]
 
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -57,6 +58,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'app.login.middleware.LoginRequiredMiddleware'
 ]
 
 ROOT_URLCONF = 'procurement.urls'
@@ -120,6 +122,17 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 AUTH_USER_MODEL = "login.UserProfile"
+LOGIN_REDIRECT_URL = "/"
+LOGIN_URL = "/accounts/login/"
+LOGIN_EXEMPT_URLS = (
+    r"^/static",
+    r"^/media",
+    r"^/accounts/login",
+    r"^/accounts/logout",
+    r"^/accounts/confirm-email",
+    r"^/admin/",
+)
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/

@@ -1,10 +1,12 @@
 from itertools import islice
+
 from app.common.console.base_generate import BaseGenerate
 from django.contrib.auth.models import Group
 from django.core.management import BaseCommand
 from django.db import connection
 from app.common.logger.logg import logger
 from app.login.models import UserProfile
+from django.contrib.auth.hashers import make_password
 
 
 class Command(BaseGenerate, BaseCommand):
@@ -72,7 +74,7 @@ class Command(BaseGenerate, BaseCommand):
         return UserProfile(
             email=self.fake_email(),
             login=self.fake_login(),
-            password=self.fake_password(),
+            password=make_password(self.fake_password()),
             full_name=self.fake_full_name(),
             first_name=self.fake_first_name(),
             last_name=self.fake_last_name(),

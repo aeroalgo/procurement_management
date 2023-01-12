@@ -56,7 +56,7 @@ class BaseGenerate:
 
     @staticmethod
     def fake_password():
-        return "pbkdf2_sha256$150000$Y4MUF8EGkQF5$s2SRZaX0l0mE6BRsArgUPDyRAQdVMIZVhVHQcLhL/gY="
+        return "admin"
 
     @staticmethod
     def fake_user_group():
