@@ -1,12 +1,10 @@
 from django.core import serializers
+from app.login.interface import Serializer
 
 
-class ProfileSerializer:
-    fields = ("email", "login")
+class ProfileSerializer(Serializer):
+    fields = ("email", "login", "full_name", "direction", "groups__name", "is_active",)
 
-    def __init__(self, data):
-        self.data = data
-        self.serialize()
 
-    def serialize(self):
-        return serializers.serialize("json", self.data, fields=self.fields)
+class GroupDirectionSerializer(Serializer):
+    fields = ("name",)
