@@ -11,7 +11,7 @@ if hasattr(settings, 'LOGIN_EXEMPT_URLS'):
     EXEMPT_URLS += [compile(expr) for expr in settings.LOGIN_EXEMPT_URLS]
 
 
-class LoginRequiredMiddleware(object):
+class LoginRequiredMiddleware:
     def __init__(self, get_response):
         self.get_response = get_response
 
@@ -22,7 +22,7 @@ class LoginRequiredMiddleware(object):
             if not any(m.match(path) for m in EXEMPT_URLS):
                 view_allowed = False
 
-        # проверяем у пользователя наличие прав на вход
+        # проверяем у пользователя наличие прав на вход)
         if request.user.is_authenticated and not request.user.has_perms(['permissions.login']):
             adapter = get_adapter(request)
             adapter.logout(request)

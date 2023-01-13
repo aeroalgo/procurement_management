@@ -38,6 +38,8 @@ ALLOWED_HOSTS = ["*"]
 # Application definition
 
 INSTALLED_APPS = [
+    "allauth",
+    "allauth.account",
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -48,7 +50,6 @@ INSTALLED_APPS = [
     'app.login.apps.LoginConfig',
     'app.common.apps.CommonConfig'
 ]
-
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -121,6 +122,17 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+# AUTHENTICATION_BACKENDS = (
+#     'django.contrib.auth.backends.ModelBackend',
+#     'login.authentication.EmailAuthBackend',
+# )
+
+# ACCOUNT_FORMS = {
+#     "login": "app.login.forms.CustomLoginForm",
+#     "reset_password": "login.forms.SiteResetPasswordForm",
+#     "reset_password_from_key": "login.forms.SiteResetPasswordKeyForm",
+# }
+
 AUTH_USER_MODEL = "login.UserProfile"
 LOGIN_REDIRECT_URL = "/"
 LOGIN_URL = "/accounts/login/"
@@ -132,7 +144,6 @@ LOGIN_EXEMPT_URLS = (
     r"^/accounts/confirm-email",
     r"^/admin/",
 )
-
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
