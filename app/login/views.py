@@ -17,19 +17,23 @@ class Profile(TemplateView):
     template_name = "profile/profile.html"
 
     def get(self, request, id):
+        if request.user.id != id and request.user.has_perm("permissions.users.index"):
+            profile_data = self.profile_information(id=id)
+            return render(request, self.template_name, context=profile_data)
+
+    def profile_information(self, id):
+        """Забираем информацию по профилю"""
+        # Профиль
         user = UserProfile.objects.get(id=id)
-        groups = GroupDirectionSerializer(user.groups.all())
-        groups.serialize()
-        groups = groups.to_dict
-        directions = GroupDirectionSerializer(user.direction.all())
-        directions.serialize()
-        directions = directions.to_dict
         data = ProfileSerializer(data=[user])
         data.serialize()
         profile_data = data.to_dict[0]
-        return render(request, self.template_name, context={
-            "profile": profile_data, "groups": groups, "directions": directions})
-
-
-    def profile_information(self):
-        pass
+        # Группы
+        groups = GroupDirectionSerializer(user.groups.all())
+        groups.serialize()
+        groups = groups.to_dict
+        # Направления
+        directions = GroupDirectionSerializer(user.direction.all())
+        directions.serialize()
+        directions = directions.to_dict
+        return {"profile": profile_data, "groups": groups, "directions": directions}

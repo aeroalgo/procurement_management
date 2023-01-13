@@ -15,9 +15,6 @@ class Command(BaseCommand):
             direction.title = direction_title
             direction.save()
             logger.info(msg=f"""
-                event=sync_permissions__handle,
-                payload__group_name={direction_title},
-                """
-                        )
-
-
+            event=sync_permissions__handle,
+            payload__group_name={direction_title}
+            """)

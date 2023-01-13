@@ -28,8 +28,9 @@ GROUP_RIGHTS = {}
 - permissions.common.search – искать в системе что-либо
 
 - permissions.article.see_all – видеть все товары
-- permissions.article.see – видеть все товары
-- permissions.article.add – закреплять товары
+- permissions.article.see – видеть товары своего направления
+- permissions.article.add – закреплять товары своего направления
+_ permissions.article.add_all - закреплять все товары 
 
 – permissions.users.index – просматривать пользователей
 – permissions.users.edit – редактировать пользователей
@@ -40,6 +41,8 @@ GROUP_RIGHTS[ROLE_ADMINISTRATOR_SYSTEM] = [
     "permissions.admin.@superuser",
     "permissions.admin.index",
     "permissions.login",
+    "permissions.users.edit",
+    "permissions.users.index",
 
 ]
 
@@ -47,7 +50,7 @@ GROUP_RIGHTS[ROLE_DIRECTOR] = [
     "permissions.login",
     "permissions.common.search",
     "permissions.article.see_all",
-    "permissions.article.add",
+    "permissions.article.add_all",
     "permissions.users.index"
 
 ]
@@ -57,6 +60,7 @@ GROUP_RIGHTS[ROLE_MANAGER] = [
     "permissions.common.search",
     "permissions.article.see"
     "permissions.article.add"
+    "permissions.users.index"
     ""
 ]
 

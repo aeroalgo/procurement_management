@@ -21,10 +21,9 @@ class Command(BaseCommand):
 
             if group_id in permissions.GROUP_RIGHTS:
                 logger.info(msg=f"""
-                    event=sync_permissions__handle,
-                    payload__group_name={group_name},
-                    """
-                            )
+                event=sync_permissions__handle
+                payload__group_name={group_name}
+                """)
 
                 group.permissions.clear()
                 for group_permission in permissions.GROUP_RIGHTS[group_id]:
@@ -37,9 +36,8 @@ class Command(BaseCommand):
 
                     group.permissions.add(permission)
                     logger.info(msg=f"""
-                        event="sync_permissions__handle",
-                        message="Added permission to group",
-                        payload__group_permission={group_permission},
-                        payload__group_name={group_name},
-                        """
-                                )
+                    event="sync_permissions__handle"
+                    message="Added permission to group",
+                    payload__group_permission={group_permission},
+                    payload__group_name={group_name},
+                    """)

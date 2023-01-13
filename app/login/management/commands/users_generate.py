@@ -40,13 +40,12 @@ class Command(BaseGenerate, BaseCommand):
             inserted_count += batch_size
             inserted_percent = inserted_count / (count * 0.01)
             logger.info(msg=f"""
-                event="users_generate__handle",
-                message="Inserted count",
-                payload__inserted_count={inserted_count},
-                payload__count={count},
-                payload__inserted_percent={inserted_percent},
-                """
-                        )
+            event="users_generate__handle",
+            message="Inserted count",
+            payload__inserted_count={inserted_count},
+            payload__count={count},
+            payload__inserted_percent={inserted_percent},
+            """)
 
     @staticmethod
     def delete_users():
@@ -58,11 +57,10 @@ class Command(BaseGenerate, BaseCommand):
 
             for table in tables:
                 logger.info(msg=f"""
-                    event="delete_users", 
-                    message="delete table", 
-                    payload__table={table}
-                    """
-                )
+                event="delete_users"
+                message="delete table"
+                payload__table={table}
+                """)
                 cursor.execute("TRUNCATE %s CASCADE" % table)
 
             cursor.execute(
