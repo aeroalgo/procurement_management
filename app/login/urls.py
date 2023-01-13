@@ -19,8 +19,8 @@ from app.login.views import CustomLoginView, Profile
 from django.contrib.auth.views import LogoutView
 
 urlpatterns = [
-    path('login/', CustomLoginView.as_view()),
-    path('logout/', LogoutView.as_view()),
-    path('profile/', Profile.as_view())
+    path('login/', CustomLoginView.as_view(), name="login"),
+    path('logout/', LogoutView.as_view(), name="logout"),
+    path('profile/<str:id>/', Profile.as_view(), name="profile")
 
 ]
