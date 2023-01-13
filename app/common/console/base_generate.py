@@ -27,6 +27,7 @@ class BaseGenerate:
 
     def fake_full_name(self):
         self.full_name_result = RussianNames(output_type='dict').get_person()
+        return " ".join(self.full_name_result.values())
 
     def fake_first_name(self):
         return self.full_name_result.get("name")
