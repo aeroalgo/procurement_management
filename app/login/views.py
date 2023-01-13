@@ -24,12 +24,9 @@ class Profile(TemplateView):
         directions = GroupDirectionSerializer(user.direction.all())
         directions.serialize()
         directions = directions.to_dict
-        print(directions)
         data = ProfileSerializer(data=[user])
         data.serialize()
         profile_data = data.to_dict[0]
-        print(profile_data)
-        print(groups)
         return render(request, self.template_name, context={
             "profile": profile_data, "groups": groups, "directions": directions})
 
