@@ -4,6 +4,8 @@ from django.contrib.auth.models import UserManager
 from django.contrib.auth.models import PermissionsMixin
 from django.contrib.auth.base_user import AbstractBaseUser, BaseUserManager
 
+from app.login.serializers import ProfileSerializer, GroupDirectionSerializer
+
 
 class MyUserManager(BaseUserManager):
     use_in_migrations = True
@@ -34,6 +36,7 @@ class MyUserManager(BaseUserManager):
 
         return self._create_user(login, password, **extra_fields)
 
+
 class Direction(models.Model):
     DIRECTION_VTMP = 0
     DIRECTION_GFG = 1
@@ -46,8 +49,8 @@ class Direction(models.Model):
         (DIRECTION_KITCHEN, "Кухня"),
     )
 
-    title = models.CharField(
-        verbose_name="Название направления", blank=False, max_length=255, null=True
+    name = models.CharField(
+        verbose_name="Название направления", blank=False, max_length=255, null=True, unique=True
     )
     key = models.CharField(
         verbose_name="Ключ направления", blank=False, max_length=255, null=True
@@ -78,3 +81,21 @@ class UserProfile(AbstractBaseUser, PermissionsMixin):
     objects = MyUserManager()
 
     USERNAME_FIELD = "login"
+
+    @staticmethod
+    def profile_information(id):
+        """Забираем информацию по профилю"""
+        # Профиль
+        user = UserProfile.objects.get(id=id)
+        data = ProfileSerializer(data=[user])
+        data.serialize()
+        profile_data = data.to_dict[0]
+        # Группы
+        groups = GroupDirectionSerializer(user.groups.all())
+        groups.serialize()
+        groups = groups.to_dict
+        # Направления
+        directions = GroupDirectionSerializer(user.direction.all())
+        directions.serialize()
+        directions = directions.to_dict
+        return {"user": user, "profile": profile_data, "groups": groups, "directions": directions}

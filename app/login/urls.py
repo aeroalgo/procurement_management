@@ -15,12 +15,13 @@ Including another URLconf
 """
 
 from django.urls import path
-from app.login.views import CustomLoginView, Profile
+from app.login.views import CustomLoginView, Profile, EditProfile
 from django.contrib.auth.views import LogoutView
 
 urlpatterns = [
     path('login/', CustomLoginView.as_view(), name="login"),
     path('logout/', LogoutView.as_view(), name="logout"),
-    path('profile/<str:id>/', Profile.as_view(), name="profile")
+    path('profile/<int:id>/', Profile.as_view(), name="profile"),
+    path('profile/<int:id>/edit/', EditProfile.as_view(), name="edit_profile")
 
 ]

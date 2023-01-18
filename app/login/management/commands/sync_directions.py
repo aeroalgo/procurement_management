@@ -12,7 +12,7 @@ class Command(BaseCommand):
         for direction_key, direction_title in Direction.DIRECTIONS:
             direction = Direction()
             direction.key = direction_key
-            direction.title = direction_title
+            direction.name = direction_title
             direction.save()
             logger.info(msg=f"""
             event=sync_permissions__handle,

@@ -12,7 +12,7 @@
       "middle_name": null,
       "is_staff": true,
       "is_active": true,
-      "groups": [],
+      "groups": [0],
       "user_permissions": []
     }
   }
