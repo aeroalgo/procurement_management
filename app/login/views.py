@@ -40,6 +40,7 @@ class EditProfile(TemplateView):
             "all_groups": groups.to_dict,
             "all_directions": directions.to_dict
         }
+
         return render(request, self.template_name, context=profile_data | all_groups_direction)
 
     @permission_required('permissions.users.edit')

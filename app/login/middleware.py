@@ -22,7 +22,7 @@ class LoginRequiredMiddleware:
             if not any(m.match(path) for m in EXEMPT_URLS):
                 view_allowed = False
 
-        # проверяем у пользователя наличие прав на вход)
+        # проверяем у пользователя наличие прав на вход
         if request.user.is_authenticated and not request.user.has_perms(['permissions.login']):
             adapter = get_adapter(request)
             adapter.logout(request)

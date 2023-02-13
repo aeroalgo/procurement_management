@@ -4,12 +4,12 @@ services:
 
   backend:
     depends_on:
-      - psql
+      - psql-main
     ports:
       - ${APP_PORT}:${APP_PORT}
 
 
-  psql:
+  psql-main:
     image: postgres:alpine
     ports:
       - "5440:5432"
@@ -22,3 +22,8 @@ services:
 
 volumes:
   psql_data: { }
+
+
+networks:
+  default:
+    name: main_network

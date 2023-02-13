@@ -10,10 +10,7 @@ class Command(BaseCommand):
 
     def handle(self, *awgs, **kwargs):
         for direction_key, direction_title in Direction.DIRECTIONS:
-            direction = Direction()
-            direction.key = direction_key
-            direction.name = direction_title
-            direction.save()
+            direction = Direction.objects.get_or_create(key=direction_key, name=direction_title)
             logger.info(msg=f"""
             event=sync_permissions__handle,
             payload__group_name={direction_title}
